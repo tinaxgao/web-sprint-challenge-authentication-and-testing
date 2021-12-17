@@ -3,7 +3,7 @@ const { findBy } = require("../users/users-model");
 function requireCredentials(req, res, next) {
   let { username, password } = req.body;
   if (!username || !username.trim() || !password || !password.trim()) {
-    res.json({ status: 400, message: "username and password required" });
+    res.status(400).json({ message: "username and password required" });
   } else {
     next();
   }

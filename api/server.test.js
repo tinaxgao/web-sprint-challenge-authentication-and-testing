@@ -19,7 +19,7 @@ it("is the correct env", () => {
   expect(process.env.NODE_ENV).toBe("testing");
 });
 
-describe("Auth router", () => {
+describe("*** AUTH ROUTER ***", () => {
   const credentials = { username: "gabe", password: "password123" };
 
   describe("[POST] Register", () => {
@@ -39,7 +39,7 @@ describe("Auth router", () => {
         .post(endpoint)
         .send(credentials.password);
       expect(res.body.message).toBe("username and password required");
-      expect(res.body.status).toBe(400);
+      expect(res.status).toBe(400);
     });
     it("error when missing password", async () => {
       const res = await request(server)
@@ -61,7 +61,7 @@ describe("Auth router", () => {
       expect(res.body.message).toBe(`welcome, ${credentials.username}`);
     });
 
-    it("error when wrong credentials", async () => {
+    it(" gives error when wrong credentials", async () => {
       const res = await request(server)
         .post(endpoint)
         .send({ username: "gabe", password: "badpassword" });
@@ -70,7 +70,7 @@ describe("Auth router", () => {
   });
 });
 
-describe("Jokes router", () => {
+describe("*** JOKES ROUTER ***", () => {
   describe("[GET] Jokes", () => {
   const endpoint = "/api/jokes"
     
