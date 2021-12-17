@@ -51,8 +51,26 @@ describe("Auth router", () => {
   });
 
   describe("[POST] Login", () => {
-    it.todo("can login with username & password");
-    it.todo("error when missing username");
+    
+    beforeEach( async () => {
+      await request(server)
+        .post("/api/auth/register")
+        .send({ username: "gabe", password: "password123" });
+    })
+
+    it("can login with username & password", async () => {
+      const res = await request(server)
+        .post("/api/auth/login")
+        .send({ username: "gabe", password: "password123" });
+      expect(res.body.message).toBe(`welcome, gabe`);
+    });
+
+    it("error when wrong credentials", async () => {
+      const res = await request(server)
+      .post("/api/auth/login")
+      .send({ username: "gabe", password: "badpassword" });
+    expect(res.body.message).toBe(`invalid credentials`);
+    });
   });
 });
 
