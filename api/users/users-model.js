@@ -1,17 +1,16 @@
 const db = require("../../data/dbConfig.js");
 
+function findBy(filter) {
+  return db("users as u").where(filter);
+}
 
 function findById(id) {
-  
-    return db("users")
-    .where('id', id).first()
+  return db("users").where("id", id).first();
 }
 
 async function add({ username, password }) {
-
   let created_id;
   await db.transaction(async (trx) => {
-    
     const [id] = await trx("users").insert({
       username,
       password,
@@ -23,6 +22,6 @@ async function add({ username, password }) {
 
 module.exports = {
   add,
-
+  findBy,
   findById,
 };
