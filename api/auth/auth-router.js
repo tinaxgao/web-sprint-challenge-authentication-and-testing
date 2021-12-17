@@ -1,11 +1,16 @@
 const router = require("express").Router();
 const bcryptjs = require("bcryptjs");
 
-const { buildToken } = require('./auth-helpers')
+const { buildToken } = require("./auth-helpers");
 const Users = require("../users/users-model");
+const { requireCredentials, checkUsernameExists } = require("./auth-middleware");
 
-router.post("/register", (req, res, next) => {
-  /*
+router.post(
+  "/register",
+  requireCredentials,
+  checkUsernameExists,
+  (req, res, next) => {
+    /*
     IMPLEMENT
     You are welcome to build additional middlewares to help with the endpoint's functionality.
     DO NOT EXCEED 2^8 ROUNDS OF HASHING!
@@ -31,28 +36,27 @@ router.post("/register", (req, res, next) => {
       the response body should include a string exactly as follows: "username taken".
   */
 
-  const { username, password } = req.body;
-  const hash = bcryptjs.hashSync(password, 8);
-  Users.add({ username, password: hash })
-    .then((newUser) => {
-      res.status(201).json({
-        id: newUser.id,
-        username: newUser.username,
-        password: newUser.password,
-      });
-    })
-    .catch(next);
-});
+    const { username, password } = req.body;
+    const hash = bcryptjs.hashSync(password, 8);
+    Users.add({ username, password: hash })
+      .then((newUser) => {
+        res.status(201).json({
+          id: newUser.id,
+          username: newUser.username,
+          password: newUser.password,
+        });
+      })
+      .catch(next);
+  }
+);
 
-router.post("/login", (req, res, next) => {
+router.post("/login", requireCredentials, (req, res, next) => {
   /*
     IMPLEMENT
     You are welcome to build additional middlewares to help with the endpoint's functionality.
   */
   let { username, password } = req.body;
-  if (!username || !username.trim() || !password || !password.trim()) {
-    res.json({ message: "username and password required" });
-  }
+ 
 
   Users.findBy({ username })
     .then(([user]) => {
@@ -68,7 +72,5 @@ router.post("/login", (req, res, next) => {
     })
     .catch(next);
 });
-
-
 
 module.exports = router;
