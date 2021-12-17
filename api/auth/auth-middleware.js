@@ -15,7 +15,7 @@ async function checkUsernameExists(req, res, next) {
     if (user) {
       next({ message: "username already exists" });
     } else {
-      //   req.user = user;
+        // req.user = user;
       next();
     }
   } catch (err) {
