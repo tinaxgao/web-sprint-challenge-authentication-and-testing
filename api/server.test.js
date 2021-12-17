@@ -82,7 +82,7 @@ describe("*** JOKES ROUTER ***", () => {
       expect(res.status).toBe(401);
     });
 
-    it("can get jokes if login is valid", async () => {
+    it("can get jokes if login token is valid", async () => {
       await request(server).post("/api/auth/register").send(credentials);
       const loggedIn = await request(server).post("/api/auth/login").send(credentials);
     
