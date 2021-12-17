@@ -1,8 +1,7 @@
 const router = require("express").Router();
-const { JWT_SECRET } = require("../secrets");
 const bcryptjs = require("bcryptjs");
-const jwt = require("jsonwebtoken");
 
+const { buildToken } = require('./auth-helpers')
 const Users = require("../users/users-model");
 
 router.post("/register", (req, res, next) => {
@@ -70,15 +69,6 @@ router.post("/login", (req, res, next) => {
     .catch(next);
 });
 
-function buildToken(user) {
-  const payload = {
-    subject: user.id,
-    username: user.username,
-  };
-  const options = {
-    expiresIn: "1d",
-  };
-  return jwt.sign(payload, JWT_SECRET, options);
-}
+
 
 module.exports = router;
