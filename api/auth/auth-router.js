@@ -3,7 +3,10 @@ const bcryptjs = require("bcryptjs");
 
 const { buildToken } = require("./auth-helpers");
 const Users = require("../users/users-model");
-const { requireCredentials, checkUsernameExists } = require("./auth-middleware");
+const {
+  requireCredentials,
+  checkUsernameExists,
+} = require("./auth-middleware");
 
 router.post(
   "/register",
@@ -56,7 +59,6 @@ router.post("/login", requireCredentials, (req, res, next) => {
     You are welcome to build additional middlewares to help with the endpoint's functionality.
   */
   let { username, password } = req.body;
- 
 
   Users.findBy({ username })
     .then(([user]) => {
