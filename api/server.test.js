@@ -19,9 +19,12 @@ it("is the correct env", () => {
   expect(process.env.NODE_ENV).toBe("testing");
 });
 
-describe("*** AUTH ROUTER ***", () => {
-  const credentials = { username: "gabe", password: "password123" };
+//TESTING CREDENTIALS
+const credentials = { username: "gabe", password: "password123" };
 
+
+describe("*** AUTH ROUTER ***", () => {
+  
   describe("[POST] Register", () => {
     const endpoint = "/api/auth/register";
 
@@ -78,11 +81,15 @@ describe("*** JOKES ROUTER ***", () => {
       const res = await request(server).get(endpoint);
       expect(res.status).toBe(401);
     });
-    it("returns message if token is invalid", async () => {
-      const res = await await request(server)
+
+    it("can get jokes if login is valid", async () => {
+      await request(server).post("/api/auth/register").send(credentials);
+      const aw = await request(server).post("/api/auth/login").send(credentials);
+    
+      const res = await request(server)
         .get(endpoint)
-        .set("Authorization", "token");
-      expect(res.message).toBe("token invalid");
+        .set("Authorization", aw.body.token);
+      expect(res.status).toBe(200);
     });
   });
 });
