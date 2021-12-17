@@ -21,9 +21,33 @@ it("is the correct env", () => {
 
 describe("Auth router", () => {
   describe("[POST] Register", () => {
-    it.todo("can register a new user with username & password");
-    it.todo("error when missing username");
-    it.todo("error when missing password");
+    it("can register a new user with username & password", async () => {
+      const res = await request(server)
+        .post("/api/auth/register")
+        .send({ username: "gabe", password: "password123" });
+      expect(res.status).toBe(201);
+    });
+    it("will not allow duplicate usernames", async () => {
+      await request(server)
+        .post("/api/auth/register")
+        .send({ username: "gabe", password: "password123" });
+      const res = await request(server)
+        .post("/api/auth/register")
+        .send({ username: "gabe", password: "password123" });
+      expect(res.body.message).toBe("username taken");
+    });
+    it("error when missing username", async () => {
+      const res = await request(server)
+        .post("/api/auth/register")
+        .send({ password: "password123" });
+      expect(res.body.message).toBe("username and password required");
+    });
+    it("error when missing password", async () => {
+      const res = await request(server)
+        .post("/api/auth/register")
+        .send({ username: "gabe" });
+      expect(res.body.message).toBe("username and password required");
+    });
   });
 
   describe("[POST] Login", () => {
@@ -34,7 +58,19 @@ describe("Auth router", () => {
 
 describe("Jokes router", () => {
   describe("[GET] Jokes", () => {
-    it.todo("cannot get jokes without token");
-    it.todo("can get jokes with token");
+    // let res;
+    // beforeEach(async () => {
+    //   res = await request(server).get("/api/jokes");
+    // });
+    it("cannot get jokes without token", async () => {
+      const res = await request(server).get("/api/jokes");
+      expect(res.status).toBe(401);
+    });
+    it("returns message if token is invalid", async () => {
+      const res = await await request(server)
+        .get("/api/jokes")
+        .set("Authorization", "token");
+      expect(res.message).toBe("token invalid");
+    });
   });
 });
