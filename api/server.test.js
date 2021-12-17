@@ -84,11 +84,11 @@ describe("*** JOKES ROUTER ***", () => {
 
     it("can get jokes if login is valid", async () => {
       await request(server).post("/api/auth/register").send(credentials);
-      const aw = await request(server).post("/api/auth/login").send(credentials);
+      const loggedIn = await request(server).post("/api/auth/login").send(credentials);
     
       const res = await request(server)
         .get(endpoint)
-        .set("Authorization", aw.body.token);
+        .set("Authorization", loggedIn.body.token);
       expect(res.status).toBe(200);
     });
   });
