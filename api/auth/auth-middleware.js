@@ -3,7 +3,7 @@ const { findBy } = require("../users/users-model");
 function requireCredentials(req, res, next) {
   let { username, password } = req.body;
   if (!username || !username.trim() || !password || !password.trim()) {
-    res.json({ message: "username and password required" });
+    res.json({ status: 400, message: "username and password required" });
   } else {
     next();
   }
@@ -13,7 +13,7 @@ async function checkUsernameExists(req, res, next) {
   try {
     const [user] = await findBy({ username: req.body.username });
     if (user) {
-      next({ message: "username already exists" });
+      next({ status: 422, message: "username taken" });
     } else {
       next();
     }
