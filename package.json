@@ -20,15 +20,15 @@
     "express-session": "^1.17.2",
     "helmet": "4.6.0",
     "knex": "0.95.14",
-    "sqlite3": "5.0.2"
+    "sqlite3": "5.0.2",
+    "jsonwebtoken": "^8.5.1",
+    "bcryptjs": "^2.4.3",
+    "cross-env": "^7.0.3"
   },
   "devDependencies": {
     "@types/jest": "^27.0.3",
-    "bcryptjs": "^2.4.3",
-    "cross-env": "7.0.3",
     "eslint": "8.4.1",
     "jest": "^27.4.4",
-    "jsonwebtoken": "^8.5.1",
     "nodemon": "2.0.15",
     "supertest": "6.1.6"
   }
